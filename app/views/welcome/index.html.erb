@@ -1,13 +1,19 @@
 
 
 <h1>Viewing Party Lite</h1>
+<% if current_user %>
+  <%= link_to "Logout", '/logout', method: :delete %>
+<% else %>
 <%= link_to "Login", "/login" %>
 <%= button_to "Create a New User", "/register", method: :get %>
+<% end %>
 
 <h3> Current Users </h3>
+<% if current_user %>
 
 <% @users.each do |user| %>
   <div id="user-<%= user.id %>">
-    <p><%= link_to "#{user.email}", dashboard_path %>'s Dashboard</p>
+    <p><%= user.email%>'s Dashboard</p>
   </div>
+<% end %>
 <% end %>

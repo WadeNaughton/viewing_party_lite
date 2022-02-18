@@ -31,6 +31,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    session.destroy
+    redirect_to root_path
+  end
+
   private
     def user_params
       params.permit(:name, :email, :password, :password_confirmation)

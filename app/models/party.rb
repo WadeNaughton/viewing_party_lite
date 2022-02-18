@@ -3,11 +3,11 @@ class Party < ApplicationRecord
   has_many :users, through: :user_parties
 
   validates :duration,
-            :presence => {message: "can't be blank"}
+            :presence => true
   validates :day,
-            :presence => {message: "can't be blank"}
+            :presence => true
   validates :start_time,
-            :presence => {message: "can't be blank"}
+            :presence => true
 
   def find_invitee(params)
     all_users = User.all
