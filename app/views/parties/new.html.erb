@@ -16,7 +16,7 @@
     </div>
   <% end %>
 
-<%= form_with url: "/users/#{@user.id}/movies/#{@movie.id}/viewing-parties", local: true, method: :post do |form| %>
+<%= form_with url: "/dashboard/movies/#{@movie.id}/viewing-parties", local: true, method: :post do |form| %>
   <%= form.label :title %>
   <%= form.text_field :title, value: "#{@movie.title}" %>
 

@@ -10,7 +10,8 @@ class WelcomeController < ApplicationController
   def create
     user = User.create(user_params)
     if user.save
-      redirect_to user_path(user.id)
+      session[:user_id] = user.id
+      redirect_to dashboard_path
     else
       flash[:alert] = "Error: Name can't be blank, Email can't be blank and must be valid, Password and Password Confirmation must match."
       redirect_to "/register"

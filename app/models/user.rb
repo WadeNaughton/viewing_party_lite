@@ -12,7 +12,6 @@ class User < ApplicationRecord
 
   has_secure_password
 
-
   def self.except_self(user)
     where.not(id: user.id)
   end

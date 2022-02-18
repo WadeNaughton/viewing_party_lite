@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
+  # before_action :current_user
+
   def index
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
     @parties = @user.parties
   end
 
@@ -11,7 +13,7 @@ class UsersController < ApplicationController
   end
 
   def discover
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
   end
 
   def login_form
@@ -19,10 +21,10 @@ class UsersController < ApplicationController
 
   def login
       user = User.find_by(email: params[:email])
-    if user.authenticate(params[:password])
+    if user && user.authenticate(params[:password])
        session[:user_id] = user.id
        flash[:success] = "Welcome, #{user.email}!"
-       redirect_to user_path(user)
+       redirect_to dashboard_path
     else
       flash[:error] = "Sorry, your credentials are bad."
       render :login_form

@@ -1,8 +1,8 @@
 <h1>Viewing Party Lite</h1>
 <h2><%= @movie.title %></h2>
 
-<%= button_to "Discover Page", "/users/#{@user.id}/discover", method: :get %>
-<%= button_to "Create Viewing Party for #{@movie.title}", "/users/#{@user.id}/movies/#{@movie.id}/viewing-party/new", method: :get %>
+<%= button_to "Discover Page", "/dashboard/discover", method: :get %>
+<%= button_to "Create Viewing Party for #{@movie.title}", "/dashboard/movies/#{@movie.id}/viewing-party/new", method: :get %>
 
 <p>Vote Average: <%= @movie.vote_average %> |
   Runtime: <%= @movie.runtime %> minutes |

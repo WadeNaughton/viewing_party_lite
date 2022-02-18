@@ -3,41 +3,46 @@ require 'rails_helper'
 RSpec.describe 'User Movie Show Page' do
   describe 'view' do
     before(:each) do
-      @user_1 = User.create!(name: "David", email: "david@email.com", password: 'test', password_confirmation: 'test')
-      @party_1 = @user_1.parties.create!(duration: 180, day: "December 12, 2021", start_time: "7:00 pm", movie_id: 100, user_id: @user_1.id)
+      @user_1 = User.create!(name: 'user_1', email: 'email@gmail.com', password: '1234', password_confirmation: '1234')
+      @party_1 = @user_1.parties.create!(duration: 180, day: "December 12, 2021", start_time: "7:00 pm", movie_id: 1, user_id: @user_1.id)
+      visit "/login"
+      fill_in "Email", with: "#{@user_1.email}"
+      fill_in "Password", with: "#{@user_1.password}"
+      click_button("Login")
+      expect(current_path).to eq("/dashboard")
     end
 
     it 'has a home link which takes the user back to the home page', :vcr do
-      visit "/users/#{@user_1.id}/movies"
+      visit "/dashboard/movies"
       click_link('Home')
       expect(current_path).to eq(root_path)
     end
 
     it 'goes back to discover page after filling in form when clicking button', :vcr do
-      visit "/users/#{@user_1.id}/movies?query=top%40rated"
+      visit "/dashboard/movies?query=top%40rated"
       top_movie = MovieFacade.top_movies.first
 
       expect(page).to have_link(top_movie.title)
 
       click_link(top_movie.title)
 
-      expect(current_path).to eq("/users/#{@user_1.id}/movies/#{top_movie.id}")
+      expect(current_path).to eq("/dashboard/movies/#{top_movie.id}")
 
       click_button 'Discover Page'
-      expect(current_path).to eq("/users/#{@user_1.id}/discover")
+      expect(current_path).to eq("/dashboard/discover")
     end
 
     it 'has a Button to create a viewing party', :vcr do
       top_movie = MovieFacade.top_movies.first
-      visit "/users/#{@user_1.id}/movies/#{top_movie.id}"
+      visit "/dashboard/movies/#{top_movie.id}"
 
       click_button "Create Viewing Party for #{top_movie.title}"
 
-      expect(current_path).to eq("/users/#{@user_1.id}/movies/#{top_movie.id}/viewing-party/new")
+      expect(current_path).to eq("/dashboard/movies/#{top_movie.id}/viewing-party/new")
     end
     it "shows review author", :vcr do
       review = MovieFacade.reviews(100)
-      visit "/users/#{@user_1.id}/movies/100"
+      visit "/dashboard/movies/100"
 
       expect(page).to have_content("Author: Andres Gomez")
       expect(page).to have_content("Far from being a good movie, with tons of flaws but already pointing to the pattern of the whole Ritchie's filmography.")
